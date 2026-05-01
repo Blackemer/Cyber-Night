@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER NIGHT | MISSION: RENUEVA LAMUD</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500;700&family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --matrix-green: #00FF41;
+            --deep-black: #050505;
+            --glow-green: rgba(0, 255, 65, 0.5);
+            --card-bg: #0d0d0d;
+            --text-gray: #b0b0b0;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--deep-black);
+            color: var(--matrix-green);
+            font-family: 'Fira Code', monospace;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Scanline effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 100;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-bottom: 1px solid var(--matrix-green);
+        }
+
+        .glitch-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            color: white;
+            text-shadow: 0 0 10px var(--matrix-green);
+        }
+
+        .sub-header {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            letter-spacing: 5px;
+            color: var(--matrix-green);
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 50px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .countdown-item {
+            background: var(--card-bg);
+            padding: 20px 10px;
+            border: 1px solid var(--matrix-green);
+            box-shadow: 0 0 10px var(--glow-green);
+        }
+
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .mission-box {
+            background: var(--card-bg);
+            border: 1px solid var(--matrix-green);
+            padding: 30px;
+            margin: 60px 0;
+            position: relative;
+        }
+
+        .mission-box::after {
+            content: "[OPERATIVO: RENUEVA LAMUD]";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--deep-black);
+            padding: 0 10px;
+            font-size: 0.9rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            border-left: 5px solid var(--matrix-green);
+            padding-left: 15px;
+        }
+
+        .goal-container {
+            margin-top: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #111;
+            border: 1px solid var(--matrix-green);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%; /* Start at 0% and update with JS or manual edit */
+            height: 100%;
+            background: var(--matrix-green);
+            box-shadow: 0 0 20px var(--matrix-green);
+            transition: width 2s ease-in-out;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: #000;
+            border: 1px solid #333;
+            padding: 25px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--matrix-green);
+            box-shadow: 0 0 15px var(--glow-green);
+        }
+
+        .btn-action {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 15px 40px;
+            background: var(--matrix-green);
+            color: black;
+            text-decoration: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-action:hover {
+            background: white;
+            box-shadow: 0 0 30px white;
+        }
+
+        #footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 0.8rem;
+            border-top: 1px solid #222;
+            color: #555;
+        }
+
+        @media (max-width: 600px) {
+            .countdown-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <p style="font-size: 0.8rem;">> STATUS: INITIALIZING_PROMOTION...</p>
+            <h1 class="glitch-title">CYBER NIGHT</h1>
+            <p class="sub-header">2026 EDITION</p>
+            
+            <div class="countdown-grid" id="countdown-timer">
+                <div class="countdown-item"><span class="countdown-number" id="days">00</span><span class="countdown-label">Days</span></div>
+                <div class="countdown-item"><span class="countdown-number" id="hours">00</span><span class="countdown-label">Hours</span></div>
+                <div class="countdown-item"><span class="countdown-number" id="minutes">00</span><span class="countdown-label">Mins</span></div>
+                <div class="countdown-item"><span class="countdown-number" id="seconds">00</span><span class="countdown-label">Secs</span></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="details-grid">
+            <div class="card">
+                <h3>[COORDENADAS]</h3>
+                <p>Ubicación: Campo Central - COAR Amazonas</p>
+                <p>Fecha: 04 de Junio, 2026</p>
+                <p>Protocolo: 7:00 PM - 11:00 PM</p>
+            </div>
+            <div class="card">
+                <h3>[ACCESO]</h3>
+                <p>Preventa: S/. 5.00</p>
+                <p>Puerta: S/. 7.00</p>
+                <p>Incluye: Acceso a Torneo Gaming + Bebida de Cortesía</p>
+            </div>
+        </section>
+
+        <section class="mission-box" style="margin-top: 40px; border-color: #0088ff;">
+            <h2 style="border-left-color: #0088ff; color: #0088ff; text-shadow: 0 0 10px rgba(0, 136, 255, 0.5);">[ MÓDULOS DE ENTRETENIMIENTO ]</h2>
+            
+            <div style="margin-bottom: 25px;">
+                <h3 style="color: white; text-shadow: 0 0 5px white;">/// OPERADOR DE FRECUENCIAS (DJ EN VIVO)</h3>
+                <img src="https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?q=80&w=800&auto=format&fit=crop" alt="" style="width: 100%; height: 200px; object-fit: cover; border: 1px solid var(--matrix-green); margin: 15px 0; opacity: 0.8; filter: grayscale(100%) contrast(120%) sepia(100%) hue-rotate(80deg);">
+                <p>El alma de la fiesta toma el control absoluto del sistema de audio. Cero algoritmos automatizados; contaremos con una selección humana en tiempo real, diseñada estratégicamente para elevar los niveles de adrenalina. Calibración de hardware en proceso.</p>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h3 style="color: white; text-shadow: 0 0 5px white;">/// ZONA DE SUMINISTROS (KIOSKO CYBER)</h3>
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop" alt="" style="width: 100%; height: 200px; object-fit: cover; border: 1px solid var(--matrix-green); margin: 15px 0; opacity: 0.8; filter: grayscale(100%) contrast(120%) sepia(100%) hue-rotate(80deg);">
+                <p>Restaura tu estamina con suministros avalados por la directiva institucional. Disponibilidad proyectada:</p>
+                <ul style="list-style-type: square; margin-left: 20px; color: var(--text-gray); margin-top: 10px;">
+                    <li>Chicha Morada (Extracto de Maíz Oscuro) - <em style="color: var(--matrix-green);">[Precio en fase de desencriptación...]</em></li>
+                    <li>Keke Artesanal de Alta Densidad - <em style="color: var(--matrix-green);">[Precio en fase de desencriptación...]</em></li>
+                    <li>Sándwiches Tácticos (Queso, Palta, Mermelada) - <em style="color: var(--matrix-green);">[Precio en fase de desencriptación...]</em></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 style="color: white; text-shadow: 0 0 5px white;">/// ARENA E-SPORTS</h3>
+                <p>Despliega tu superioridad técnica. Los servidores locales habilitarán un torneo de alta intensidad. <em style="color: var(--matrix-green);">[Parámetros del juego pendientes de autorización oficial...]</em></p>
+            </div>
+        </section>
+
+        <details class="mission-box" style="margin-top: 40px; cursor: pointer; border-color: #333; transition: all 0.3s ease;">
+            <summary style="font-size: 1.1rem; font-weight: bold; text-transform: uppercase; color: var(--text-gray); outline: none;">[ + DESENCRIPTAR MISIÓN CAS: RENUEVA LAMUD ]</summary>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px dashed #333;">
+                <h2>LA MISIÓN</h2>
+                <p>Estamos recaudando fondos para el proyecto <strong>"Renueva Lamud"</strong>. El campo deportivo de nuestra comunidad se encuentra en abandono, con estructuras oxidadas y terreno irregular.</p>
+                <p style="margin-top: 15px;">Tu entrada a la Cyber Night financia directamente las lijas, la pintura anticorrosiva y el material de nivelación necesario para devolverle el deporte a Luya.</p>
+            </div>
+        </details>
+    </main>
+
+    <footer id="footer">
+        <p>CYBER NIGHT 2026 | COAR AMAZONAS - 5TO C</p>
+    </footer>
+
+    <script>
+        // Target Date: June 4, 2026 at 19:00:00
+        const targetDate = new Date("June 4, 2026 19:00:00").getTime();
+
+        const updateTimer = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(updateTimer);
+                document.getElementById("countdown-timer").innerHTML = "<h2>SISTEMA ONLINE - EVENTO EN CURSO</h2>";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
